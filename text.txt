@@ -1,0 +1,73 @@
+import curses
+import random
+
+def load_text():
+    with open("text.txt", "r") as file:
+        content = file.readlines()
+    return [list(line.rstrip()) for line in content]  # Convert lines to lists of characters
+
+def place_glitches(text, num_glitches=10):
+    glitch_positions = []
+    for _ in range(num_glitches):
+        y = random.randint(0, len(text) - 1)
+        x = random.randint(0, len(text[y]) - 1)
+        text[y][x] = '$'
+        glitch_positions.append((y, x))
+    return glitch_positions
+
+def main(stdscr):
+    # Hide cursor
+    curses.curs_set(0)
+    
+    # Load text from file
+    text = load_text()
+    glitches = place_glitches(text)
+    
+    # Get screen size
+    height, width = stdscr.getmaxyx()
+    
+    # Set initial position
+    x, y = 0, 0
+    
+    # Instructions
+    instructions = "Navigate using 'h' (left), 'l' (right), 'j' (down), 'k' (up). Fix '$' by moving over it. Press 'q' to quit."
+    
+    while True:
+        # Clear screen
+        stdscr.clear()
+        stdscr.addstr(0, 0, instructions, curses.A_BOLD)
+        
+        # Draw text
+        for i, line in enumerate(text):
+            stdscr.addstr(i + 1, 0, "".join(line))
+        
+        # Draw cursor
+        stdscr.addch(y + 1, x, '@', curses.A_REVERSE)
+        
+        # Refresh screen
+        stdscr.refresh()
+        
+        # Get user input
+        key = stdscr.getch()
+        
+        # Quit condition
+        if key == ord('q'):
+            break
+        
+        # Movement logic
+        elif key == ord('h') and x > 0:
+            x -= 1  # Move left
+        elif key == ord('l') and x < len(text[y]) - 1:
+            x += 1  # Move right
+        elif key == ord('j') and y < len(text) - 1:
+            y += 1  # Move down
+        elif key == ord('k') and y > 0:
+            y -= 1  # Move up
+        
+        # Fix glitches
+        if (y, x) in glitches:
+            text[y][x] = ' '  # Remove the '$'
+            glitches.remove((y, x))
+        
+if __name__ == "__main__":
+    curses.wrapper(main)
