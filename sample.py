@@ -5,7 +5,7 @@ import time
 def main(stdscr):
     # Initialize curses
     curses.curs_set(0)  # Hide cursor
-    stdscr.timeout(300)  # Refresh rate in milliseconds
+    stdscr.timeout(700)  # Refresh rate in milliseconds
     
     # Get screen dimensions
     sh, sw = stdscr.getmaxyx()
@@ -61,7 +61,7 @@ def main(stdscr):
                 stdscr.addch(player_y, player_x, 'X')
             
             # Show current count buffer in top left corner
-            # stdscr.addstr(0, 0, f"Count: {count_buffer}")
+            stdscr.addstr(0, 0, f"Count: {count_buffer}")
             
             # Refresh screen
             stdscr.refresh()
