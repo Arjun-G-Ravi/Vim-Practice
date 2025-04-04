@@ -1,6 +1,9 @@
+'''
+Will develop after a while, have to use this as a foundation to write a proper version
+
+'''
 import curses
 import random
-import time
 
 def main(stdscr):
     # Initialize curses
