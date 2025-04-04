@@ -4,8 +4,8 @@ import time
 
 def main(stdscr):
     # Initialize curses
-    curses.curs_set(0)  # Hide cursor
-    stdscr.timeout(700)  # Refresh rate in milliseconds
+    curses.curs_set(0) 
+    stdscr.timeout(700)  # Refresh rate
     
     # Get screen dimensions
     sh, sw = stdscr.getmaxyx()
